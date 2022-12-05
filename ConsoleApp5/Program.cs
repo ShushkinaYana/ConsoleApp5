@@ -7,28 +7,28 @@
 
         }
 
-        public enum ProgramistState
+        public enum EnemyState
         {
             Idle, Moving, Attack
         }
 
-        public class Programist
+        public class Enemy
         {
 
 
             private Character m_targetCharacter = null;
             private bool m_atTarget = false;
-            private ProgramistState m_state = ProgramistState.Idle;
-            private Dictionary<ProgramistState, BaseProgramistState> m_states = new Dictionary<ProgramistState, BaseProgramistState>();
-            public Programist()
+            private EnemyState m_state = EnemyState.Idle;
+            private Dictionary<EnemyState, BaseEnemyState> m_states = new Dictionary<EnemyState, BaseEnemyState>();
+            public Enemy()
             {
-                m_states.Add(ProgramistState.Idle, new ProgramistIdleState(this));
-                m_states.Add(ProgramistState.Moving, new ProgramistMoveState(this));
-                m_states.Add(ProgramistState.Attack, new ProgramistAttackState(this));
+                m_states.Add(EnemyState.Idle, new EnemyIdleState(this));
+                m_states.Add(EnemyState.Moving, new EnemyMoveState(this));
+                m_states.Add(EnemyState.Attack, new EnemyAttackState(this));
 
             }
 
-            public void ChangeState(ProgramistState state)
+            public void ChangeState(EnemyState state)
             {
                 m_state = state;
             }
@@ -36,13 +36,13 @@
             public void FindCharacter()
             {
                 m_targetCharacter = new Character();
-                ChangeState(ProgramistState.Moving);
+                ChangeState(EnemyState.Moving);
             }
 
             public void Move()
             {
 
-                ChangeState(ProgramistState.Attack);
+                ChangeState(EnemyState.Attack);
 
             }
 
@@ -50,7 +50,7 @@
             {
                 m_targetCharacter = null;
 
-                ChangeState(ProgramistState.Idle);
+                ChangeState(EnemyState.Idle);
 
             }
 
@@ -59,20 +59,20 @@
 
                 m_states[m_state].Update();
             }
-            public abstract class BaseProgramistState
+            public abstract class BaseEnemyState
             {
-                protected readonly Programist m_prog;
+                protected readonly Enemy m_prog;
 
-                public BaseProgramistState(Programist prog)
+                public BaseEnemyState(Enemy prog)
                 {
                     m_prog = prog;
                 }
                 public abstract void Update();
 
             }
-            public class ProgramistIdleState : BaseProgramistState
+            public class EnemyIdleState : BaseEnemyState
             {
-                public ProgramistIdleState(Programist prog) : base(prog) { }
+                public EnemyIdleState(Enemy prog) : base(prog) { }
 
                 public override void Update()
                 {
@@ -81,9 +81,9 @@
 
             }
 
-            public class ProgramistMoveState : BaseProgramistState
+            public class EnemyMoveState : BaseEnemyState
             {
-                public ProgramistMoveState(Programist prog) : base(prog) { }
+                public EnemyMoveState(Enemy prog) : base(prog) { }
 
                 public override void Update()
                 {
@@ -92,9 +92,9 @@
 
             }
 
-            public class ProgramistAttackState : BaseProgramistState
+            public class EnemyAttackState : BaseEnemyState
             {
-                public ProgramistAttackState(Programist prog) : base(prog) { }
+                public EnemyAttackState(Enemy prog) : base(prog) { }
 
                 public override void Update()
                 {
